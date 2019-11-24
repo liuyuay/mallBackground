@@ -13,6 +13,6 @@ public class HelloWorld {
 
     @RequestMapping("/world")
     public String world() {
-        return "hello,Worldaaa.";
+        return "hello,World.";
     }
 }
