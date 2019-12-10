@@ -27,10 +27,11 @@ public class HitokotoServiceImpl extends ServiceImpl<HitokotoDao, Hitokoto> impl
          *      return hitokotoDao.findAllDate(id)
          * */
         id = "076BA86AB3C24B30BD5804C936EE3C58";
-        QueryWrapper<Hitokoto> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",id);
+//        QueryWrapper<Hitokoto> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("id",id);
 //        Hitokoto hitokoto = this.getOne(queryWrapper);
-        Hitokoto hitokoto = hitokotoDao.findAllData(id);
+//        Hitokoto hitokoto = hitokotoDao.findAllData(id);
+        Hitokoto hitokoto = hitokotoDao.selectById(id);
         return hitokoto;
     }
 

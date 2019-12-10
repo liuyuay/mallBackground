@@ -1,5 +1,7 @@
 package com.liuyu.mall.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.liuyu.mall.domain.Hitokoto;
 import com.liuyu.mall.service.HitokotoService;
 import io.swagger.annotations.Api;
@@ -29,8 +31,10 @@ public class HitokotoController{
     @ApiImplicitParam(paramType = "query", name = "Id", value = "一言id", required = true, dataType = "string")
     public String getHitokotoById(@RequestParam String Id){
         hitokoto = hitokotoService.getData(Id);
-        System.out.println(hitokoto.getHitokoto());
-        return hitokoto.getHitokoto();
+        Object object = JSONArray.toJSON(hitokoto);
+        String json = object.toString();
+        System.out.println(json);
+        return json;
     }
 
 

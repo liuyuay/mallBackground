@@ -49,6 +49,13 @@
             <artifactId>druid</artifactId>
             <version>1.1.12</version>
         </dependency>
+        <!-- 阿里的fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.58</version>
+        </dependency>
+
         <!--MySQL驱动-->
         <dependency>
             <groupId>mysql</groupId>
