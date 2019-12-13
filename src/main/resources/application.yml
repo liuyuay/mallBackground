@@ -5,6 +5,10 @@ server:
     context-path: /liuyu
 #配置数据库信息
 spring:
+  security:
+    user:
+      name: liuyu
+      password: liuyu0113
   datasource:
     url: jdbc:mysql://49.234.102.27:3306/myblog?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
