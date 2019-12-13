@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liuyu.mall.domain.Hitokoto;
 import com.liuyu.mall.repository.HitokotoDao;
 import com.liuyu.mall.service.HitokotoService;
+import com.liuyu.mall.utils.CreateQrCode;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,7 @@ public class HitokotoServiceImpl extends ServiceImpl<HitokotoDao, Hitokoto> impl
 //        Hitokoto hitokoto = this.getOne(queryWrapper);
 //        Hitokoto hitokoto = hitokotoDao.findAllData(id);
         Hitokoto hitokoto = hitokotoDao.selectById(id);
+        CreateQrCode.Create("","","");
         return hitokoto;
     }
 
