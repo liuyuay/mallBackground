@@ -5,6 +5,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+/**
+ * @author liuyu
+ * 一言  实体类
+ */
 @Component
 @TableName("hitokoto")
 public class Hitokoto implements Serializable {

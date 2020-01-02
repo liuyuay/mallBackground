@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author liuyu
+ * 角色实体类
+ */
 @Component
 @TableName("role")
 public class Role implements Serializable {
