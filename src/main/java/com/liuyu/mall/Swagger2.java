@@ -1,17 +1,18 @@
 package com.liuyu.mall;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * @author liuyu
  * Swagger2配置类
  * 在与spring boot集成时，放在与Application.java同级的目录下。
  * 通过@Configuration注解，让Spring来加载该类配置。
@@ -27,7 +28,7 @@ public class Swagger2 {
      * 通过select()函数返回一个ApiSelectorBuilder实例,用来控制哪些接口暴露给Swagger来展现，
      * 本例采用指定扫描的包路径来定义指定要建立API的目录。
      *
-     * @return
+     * @return Docket 一个Docket对象
      */
     @Bean
     public Docket createRestApi(){
@@ -43,14 +44,13 @@ public class Swagger2 {
      * 创建该API的基本信息（这些基本信息会展现在文档页面中）
      * 访问地址：http://项目实际地址/swagger-ui.html
      * http://localhost:8082/liuyu/swagger-ui.html
-     * @return
+     * @return liuyu
      */
-    public ApiInfo apiInfo(){
+    private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
                 .title("Spring Boot中使用Swagger2构建RESTful APIs")
-                .description("用于学习和测试Swagger2的使用")
-                .termsOfServiceUrl("http://www.baidu.com")
-                .contact("liuyu")
+                .description("用于生产环境中测试接口。")
+                .contact(new Contact("liuyu","http://www.baidu.com","30967086@qq.com"))
                 .version("1.0")
                 .build();
     }

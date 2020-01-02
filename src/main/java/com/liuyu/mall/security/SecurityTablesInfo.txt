@@ -1,0 +1,6 @@
+用于权限控制的表一共有5个。
+user            用户表
+role            角色表
+permission      权限表
+userRole        用户对应角色表
+rolePermission  角色对应权限表

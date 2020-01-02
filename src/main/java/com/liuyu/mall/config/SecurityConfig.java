@@ -61,6 +61,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         registry.antMatchers("/home").hasIpAddress("127.0.0.1");
         // 允许匿名的url - 可理解为放行接口 - 多个接口使用,分割
         registry.antMatchers("/login", "/index").permitAll();
+        // swagger start    配置给Swagger2放行
+        registry.antMatchers("/swagger-ui.html").permitAll();
+        registry.antMatchers("/swagger-resources/**").permitAll();
+        registry.antMatchers("/images/**").permitAll();
+        registry.antMatchers("/webjars/**").permitAll();
+        registry.antMatchers("/v2/api-docs").permitAll();
+        registry.antMatchers("/configuration/ui").permitAll();
+        registry.antMatchers("/configuration/security").permitAll();
+        // swagger end
         // OPTIONS(选项)：查找适用于一个特定网址资源的通讯选择。 在不需执行具体的涉及数据传输的动作情况下， 允许客户端来确定与资源相关的选项以及 / 或者要求， 或是一个服务器的性能
         registry.antMatchers(HttpMethod.OPTIONS, "/**").denyAll();
         // 自动登录 - cookie储存方式

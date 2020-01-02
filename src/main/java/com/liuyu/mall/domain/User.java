@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Component
-@TableName("hitokoto")
+@TableName("user")
 public class User implements Serializable {
 
     private String id;
