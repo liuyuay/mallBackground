@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserService {
 
     @Resource
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public User login(String name) {

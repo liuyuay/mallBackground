@@ -4,6 +4,6 @@
 <mapper namespace="com.liuyu.mall.repository.HitokotoDao">
     <!--namespace指向的是Dao的包-->
     <select id="findAllData" parameterType="String" resultType="com.liuyu.mall.domain.Hitokoto">
-        SELECT hitokoto FROM hitokoto WHERE id = #{id}
+        select hitokoto from hitokoto where id = #{id}
     </select>
 </mapper>
