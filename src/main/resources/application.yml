@@ -49,6 +49,7 @@ mybatis-plus:
   mapper-locations: classpath*:com/liuyu/mall/repository/mapper/*.xml
   type-aliases-package: com.liuyu.mall.domain
   global-config:
+#    是否显示MyBatisPlus的banner
     banner: false
   configuration:
 #    控制台输出执行的SQL语句

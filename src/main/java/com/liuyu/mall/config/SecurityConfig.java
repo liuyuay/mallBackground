@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 标识只能在 服务器本地ip[127.0.0.1或localhost] 访问`/home`接口，其他ip地址无法访问
         registry.antMatchers("/home").hasIpAddress("127.0.0.1");
         // 允许匿名的url - 可理解为放行接口 - 多个接口使用,分割
-        registry.antMatchers("/login", "/index").permitAll();
+        registry.antMatchers("/liuyu/getUserName", "/index").permitAll();
         // swagger start    配置给Swagger2放行
         registry.antMatchers("/swagger-ui.html").permitAll();
         registry.antMatchers("/swagger-resources/**").permitAll();

@@ -14,11 +14,27 @@
     <name>mall</name>
     <description>Demo project for Spring Boot</description>
 
+    <!--单项目配置阿里镜像-->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <!-- 是否开启发布版构件下载 -->
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!-- 是否开启快照版构件下载 -->
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
-
-    <!--单项目配置阿里镜像-->
 
     <dependencies>
         <!--Swagger依赖start-->
