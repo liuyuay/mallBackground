@@ -1,6 +1,7 @@
 package com.liuyu.mall.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Date;
  * 角色对应的权限实体类
  */
 @Component
+@ApiModel(description = "系统管理-角色对应的权限表")
 @TableName("RolePermission")
 public class RolePermission implements Serializable {
 

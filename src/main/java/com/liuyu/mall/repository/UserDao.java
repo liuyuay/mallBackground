@@ -2,13 +2,13 @@ package com.liuyu.mall.repository;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.liuyu.mall.domain.User;
-import com.liuyu.mall.utils.dto.input.UserQueryPara;
-import javafx.scene.control.Pagination;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * @author liuyu
+ */
 public interface UserDao extends BaseMapper<User> {
 
 //    /**
@@ -36,12 +36,13 @@ public interface UserDao extends BaseMapper<User> {
 //     */
 //    User selectUserByUsername(@Param("username") String username);
 //
-//    /**
-//     * 通过token查找用户信息
-//     *
-//     * @param token:
-//     * @return User
-//     */
+    /**
+     * 通过token查找用户信息
+     *
+     * @param token 用户认证值
+     * @return List<User>
+     */
+    List<User> selectListByToken (@Param("token") String token);
 //    User getUserInfoByToken(@Param("token") String token);
 //
 //    /**

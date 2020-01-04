@@ -1,10 +1,16 @@
 package com.liuyu.mall.config;
 
 import com.liuyu.mall.security.filter.AdminAuthenticationProcessingFilter;
+import com.liuyu.mall.security.filter.MyAuthenticationFilter;
+import com.liuyu.mall.security.login.AdminAuthenticationEntryPoint;
+import com.liuyu.mall.security.url.UrlAccessDecisionManager;
+import com.liuyu.mall.security.url.UrlAccessDeniedHandler;
+import com.liuyu.mall.security.url.UrlFilterInvocationSecurityMetadataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +20,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.PrintWriter;
 
@@ -28,12 +36,43 @@ import java.io.PrintWriter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
+     * 访问鉴权 - 认证token、签名...
+     */
+    private final MyAuthenticationFilter myAuthenticationFilter;
+    /**
+     * 访问权限认证异常处理
+     */
+    private final AdminAuthenticationEntryPoint adminAuthenticationEntryPoint;
+    /**
      * 用户密码校验过滤器
      */
     private final AdminAuthenticationProcessingFilter adminAuthenticationProcessingFilter;
 
-    public SecurityConfig(AdminAuthenticationProcessingFilter adminAuthenticationProcessingFilter) {
+    // 上面是登录认证相关  下面为url权限相关 - ========================================================================================
+
+    /**
+     * 获取访问url所需要的角色信息
+     */
+    private final UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
+    /**
+     * 认证权限处理 - 将上面所获得角色权限与当前登录用户的角色做对比，如果包含其中一个角色即可正常访问
+     */
+    private final UrlAccessDecisionManager urlAccessDecisionManager;
+    /**
+     * 自定义访问无权限接口时403响应内容
+     */
+    private final UrlAccessDeniedHandler urlAccessDeniedHandler;
+
+    /**
+     * 写一个构造方法初始化类中的常量
+     * */
+    public SecurityConfig(MyAuthenticationFilter myAuthenticationFilter, AdminAuthenticationEntryPoint adminAuthenticationEntryPoint, AdminAuthenticationProcessingFilter adminAuthenticationProcessingFilter, UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource, UrlAccessDeniedHandler urlAccessDeniedHandler, UrlAccessDecisionManager urlAccessDecisionManager) {
+        this.myAuthenticationFilter = myAuthenticationFilter;
+        this.adminAuthenticationEntryPoint = adminAuthenticationEntryPoint;
         this.adminAuthenticationProcessingFilter = adminAuthenticationProcessingFilter;
+        this.urlFilterInvocationSecurityMetadataSource = urlFilterInvocationSecurityMetadataSource;
+        this.urlAccessDeniedHandler = urlAccessDeniedHandler;
+        this.urlAccessDecisionManager = urlAccessDecisionManager;
     }
 
     /**
@@ -48,6 +87,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 禁用CSRF 开启跨域
         http.csrf().disable().cors();
 
+        // 未登录认证异常
+        http.exceptionHandling().authenticationEntryPoint(adminAuthenticationEntryPoint);
+        // 登录过后访问无权限的接口时自定义403响应内容
+        http.exceptionHandling().accessDeniedHandler(urlAccessDeniedHandler);
+
+        // url权限认证处理
+        registry.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+            @Override
+            public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                o.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource);
+                o.setAccessDecisionManager(urlAccessDecisionManager);
+                return o;
+            }
+        });
+        // 不创建会话 - 即通过前端传token到后台过滤器中验证是否存在访问权限
+//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 登录处理 - 前后端一体的情况下
 //        registry.and().formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll()
 //                // 自定义登陆用户名和密码属性名，默认为 username和password
@@ -57,10 +112,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                // 退出登录
 //                .and().logout().permitAll();
 
+        // 标识访问 `/home` 这个接口，需要具备`ADMIN`角色
+//        registry.antMatchers("/home").hasRole("ADMIN");
         // 标识只能在 服务器本地ip[127.0.0.1或localhost] 访问`/home`接口，其他ip地址无法访问
         registry.antMatchers("/home").hasIpAddress("127.0.0.1");
         // 允许匿名的url - 可理解为放行接口 - 多个接口使用,分割
-        registry.antMatchers("/liuyu/getUserName", "/index").permitAll();
+        registry.antMatchers("/login/index", "/index").permitAll();
         // swagger start    配置给Swagger2放行
         registry.antMatchers("/swagger-ui.html").permitAll();
         registry.antMatchers("/swagger-resources/**").permitAll();
@@ -80,7 +137,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         registry.and().headers().frameOptions().disable();
 
         // 自定义过滤器认证用户名密码
-        http.addFilterAt(adminAuthenticationProcessingFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(adminAuthenticationProcessingFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(myAuthenticationFilter, BasicAuthenticationFilter.class);
     }
 
     /**
@@ -88,24 +146,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @param auth ay
      * @throws Exception ay
      */
-    @Autowired
-    public void config(AuthenticationManagerBuilder auth) throws Exception{
-        // 在内存中配置用户，配置多个用户调用`and()`方法
-        auth.inMemoryAuthentication()
-                //指定加密方式
-                .passwordEncoder(passwordEncoder())
-                //管理员身份
-                .withUser("liuyu").password(passwordEncoder().encode("liuyu0113")).roles("ADMIN")
-                .and()
-                //普通用户身份
-                .withUser("liuyuay").password(passwordEncoder().encode("liuyuay0113")).roles("USER");
-    }
+//    @Autowired
+//    public void config(AuthenticationManagerBuilder auth) throws Exception{
+//        // 在内存中配置用户，配置多个用户调用`and()`方法
+//        auth.inMemoryAuthentication()
+//                //指定加密方式
+//                .passwordEncoder(passwordEncoder())
+//                //管理员身份
+//                .withUser("liuyu").password(passwordEncoder().encode("liuyu0113")).roles("ADMIN")
+//                .and()
+//                //普通用户身份
+//                .withUser("liuyuay").password(passwordEncoder().encode("liuyuay0113")).roles("USER");
+//    }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        // BCryptPasswordEncoder：Spring Security 提供的加密工具，可快速实现加密加盐
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        // BCryptPasswordEncoder：Spring Security 提供的加密工具，可快速实现加密加盐
+//        return new BCryptPasswordEncoder();
+//    }
 
     /**
      * 登录处理

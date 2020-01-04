@@ -1,6 +1,7 @@
 package com.liuyu.mall.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Date;
  * 用户对应的角色实体类
  */
 @Component
+@ApiModel(description = "系统管理-用户对应的角色表")
 @TableName("UserRole")
 public class UserRole implements Serializable {
 

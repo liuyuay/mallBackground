@@ -27,7 +27,7 @@ public class AdminAuthenticationProcessingFilter extends AbstractAuthenticationP
      * @param adminAuthenticationFailureHandler: 认证失败处理
      */
     public AdminAuthenticationProcessingFilter(CusAuthenticationManager authenticationManager, AdminAuthenticationSuccessHandler adminAuthenticationSuccessHandler, AdminAuthenticationFailureHandler adminAuthenticationFailureHandler) {
-        super(new AntPathRequestMatcher("/login", "POST"));
+        super(new AntPathRequestMatcher("/liuyu/login", "POST"));
         this.setAuthenticationManager(authenticationManager);
         this.setAuthenticationSuccessHandler(adminAuthenticationSuccessHandler);
         this.setAuthenticationFailureHandler(adminAuthenticationFailureHandler);

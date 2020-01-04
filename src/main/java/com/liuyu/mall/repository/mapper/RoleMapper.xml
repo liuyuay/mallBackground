@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyu.mall.repository.RoleDao">
+    <!--namespace指向的是Dao的包-->
+    <!--namespace中有的语句，这里必须要有，但是这里有的，namespace中可以没有。-->
+    <select id="selectListById" parameterType="String" resultType="com.liuyu.mall.domain.Role">
+        select * from role where id = #{id}
+    </select>
+</mapper>

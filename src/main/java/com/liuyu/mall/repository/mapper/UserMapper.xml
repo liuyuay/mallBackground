@@ -7,4 +7,8 @@
     <select id="login" parameterType="String" resultType="com.liuyu.mall.domain.User">
         select * from user where name = #{name}
     </select>
+
+    <select id="selectListByToken" parameterType="String" resultType="user">
+        select * from user where token = #{token}
+    </select>
 </mapper>
