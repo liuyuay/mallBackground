@@ -31,6 +31,7 @@ inner join role on role.id = rolePermission.roleid
 inner join permission on permission.id = rolePermission.permissionid;
 
 # 向用户表中插入数据(密码：123456)
+-- username:liuyuay password:liuyuay0113
 insert into myblog.user values ('00000000000000000000000000000000','admin','管理员','97ba1ef7f148b2aec1c61303a7d88d0967825495','liuyuay','token',sysdate(),'00000000000000000000000000000000',sysdate(),'00000000000000000000000000000000');
 insert into myblog.user values (replace(uuid(), '-', ''),'liuyu','刘雨','97ba1ef7f148b2aec1c61303a7d88d0967825495','salt','liuyuay',sysdate(),'00000000000000000000000000000000',sysdate(),'00000000000000000000000000000000');
 
