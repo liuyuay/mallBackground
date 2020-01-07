@@ -13,14 +13,14 @@ import java.util.Date;
  */
 @Component
 @ApiModel(description = "系统管理-用户对应的角色表")
-@TableName("UserRole")
+@TableName("userRole")
 public class UserRole implements Serializable {
 
     private String id;
 
-    private String roleId;
+    private String roleid;
 
-    private String userId;
+    private String userid;
 
     private Date cretime;
 
@@ -34,20 +34,20 @@ public class UserRole implements Serializable {
         this.id = id;
     }
 
-    public String getRoleId() {
-        return roleId;
+    public String getRoleid() {
+        return roleid;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setRoleid(String roleid) {
+        this.roleid = roleid;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public Date getCretime() {

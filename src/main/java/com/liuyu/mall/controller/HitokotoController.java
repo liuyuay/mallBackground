@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/hitokoto")
+@RequestMapping
 @Api(value = "HitokotoController|一言")
 public class HitokotoController{
 

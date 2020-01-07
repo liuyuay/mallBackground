@@ -46,11 +46,15 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
         // 获取当前请求url
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
         // TODO 忽略url请放在此处进行过滤放行
-        String loginUrl = "/liuyu/login";
-        if (loginUrl.equals(requestUrl) || requestUrl.contains("logout")) {
+        String loginUrl = "/login";
+
+        if (loginUrl.equals(requestUrl) || requestUrl.contains("logout") || requestUrl.contains("/register")) {
             return null;
         }
 
+        if (requestUrl.contains("/login") || requestUrl.contains("/register")){
+            return null;
+        }
         // 数据库中所有url
         List<Permission> permissionList = permissionDao.selectList(null);
         for (Permission permission : permissionList) {
@@ -59,7 +63,7 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
                 List<RolePermission> permissions = rolePermissionDao.selectList(new QueryWrapper<RolePermission>().eq("permissionId", permission.getId()));
                 List<String> roles = new LinkedList<>();
                 if (!CollectionUtils.isEmpty(permissions)){
-                    String roleId = permissions.get(0).getRoleId();
+                    String roleId = permissions.get(0).getRoleid();
                     Role role = roleDao.selectById(roleId);
                     roles.add(role.getCode());
                 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author liuyu
  */
 @RestController
-@RequestMapping("/liuyu")
+@RequestMapping
 @Api(value = "SwaggerController|一个用来测试Swagger2的控制器")
 public class SwaggerController {
 

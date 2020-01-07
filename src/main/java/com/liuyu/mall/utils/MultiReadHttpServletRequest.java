@@ -125,30 +125,31 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
      * @return: java.lang.String
      */
     public String getBodyJsonStrByJson(ServletRequest request){
-//        StringBuilder requestStrBuilder = new StringBuilder();
-//        try {
-//            BufferedReader streamReader = new MultiReadHttpServletRequest(request).getReader();
-//            String inputStr;
-//            while ((inputStr = streamReader.readLine()) != null) {
-//                requestStrBuilder.append(inputStr);
-//            }
-//            // 将json字符串转化为jsonbean对象
-////            User user = JSON.parseObject(requestStrBuilder.toString(), User.class);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return requestStrBuilder.toString();
-        StringBuffer json = new StringBuffer();
-        String line = null;
+        StringBuilder requestStrBuilder = new StringBuilder();
         try {
-            BufferedReader reader = request.getReader();
-            while((line = reader.readLine()) != null) {
-                json.append(line);
+            BufferedReader streamReader = new MultiReadHttpServletRequest((HttpServletRequest) request).getReader();
+            String inputStr;
+            while ((inputStr = streamReader.readLine()) != null) {
+                requestStrBuilder.append(inputStr);
             }
+            // 将json字符串转化为jsonbean对象
+//            User user = JSON.parseObject(requestStrBuilder.toString(), User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch(Exception e) {
-//            log.error("请求参数转换错误!",e);
-        }
-        return json.toString();
+        return requestStrBuilder.toString();
+//        StringBuffer json = new StringBuffer();
+//        String line = null;
+//        try {
+//            Map<String, String[]> map = request.getParameterMap();
+//            BufferedReader reader = request.getReader();
+//            while((line = reader.readLine()) != null) {
+//                json.append(line);
+//            }
+//        }
+//        catch(Exception e) {
+////            log.error("请求参数转换错误!",e);
+//        }
+//        return json.toString();
     }
 }

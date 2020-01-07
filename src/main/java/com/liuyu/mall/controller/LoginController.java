@@ -1,32 +1,48 @@
 package com.liuyu.mall.controller;
 
+import com.liuyu.mall.security.dto.SecurityUser;
+import com.liuyu.mall.security.service.impl.UserDetailsServiceImpl;
+import com.liuyu.mall.utils.dto.output.ApiResult;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
 
 /**
  * 登录控制器
  * @author liuyu
  */
 @RestController
-@RequestMapping("/login")
+@RequestMapping
 public class LoginController {
-    @GetMapping("/")
-    public ModelAndView showHome() {
-        return new ModelAndView("home.html");
-    }
 
-    @GetMapping("/index")
-    public String index() {
-        return "Hello World ~";
-    }
+    @Resource
+    UserDetailsServiceImpl userDetailsService;
 
-    @GetMapping("/login")
-    public ModelAndView login() {
-        return new ModelAndView("login.html");
-    }
+//    @Resource
+//    SecurityUser securityUser;
+//    @GetMapping("/")
+//    public ModelAndView showHome() {
+//        return new ModelAndView("home.html");
+//    }
+
+//    @GetMapping(value = "/login", produces = "application/json;charset=utf-8")
+//    @ApiOperation(value = "登录系统", httpMethod = "GET", response = ApiResult.class)
+//    public ApiResult login(@RequestParam String username,@RequestParam String password) {
+//        securityUser = (SecurityUser)userDetailsService.loadUserByUsername(username);
+//        return ApiResult.ok("登录系统成功", securityUser);
+//    }
+
+//    @GetMapping("/login")
+//    public ModelAndView login() {
+//        return new ModelAndView("login.html");
+//    }
 
     @GetMapping("/home")
     public String home() {

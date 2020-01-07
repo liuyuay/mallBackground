@@ -9,14 +9,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+/**
+ * @author liuyu
+ */
 @Component
 public class CusAuthenticationManager implements AuthenticationManager {
 
     private final AdminAuthenticationProvider adminAuthenticationProvider;
-
-    public CusAuthenticationManager(){
-        adminAuthenticationProvider = null;
-    }
 
     public CusAuthenticationManager(AdminAuthenticationProvider adminAuthenticationProvider) {
         this.adminAuthenticationProvider = adminAuthenticationProvider;

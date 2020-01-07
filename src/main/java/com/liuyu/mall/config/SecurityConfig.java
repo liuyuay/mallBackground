@@ -6,12 +6,10 @@ import com.liuyu.mall.security.login.AdminAuthenticationEntryPoint;
 import com.liuyu.mall.security.url.UrlAccessDecisionManager;
 import com.liuyu.mall.security.url.UrlAccessDeniedHandler;
 import com.liuyu.mall.security.url.UrlFilterInvocationSecurityMetadataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -24,7 +22,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import java.io.PrintWriter;
+import javax.annotation.Resource;
 
 /**
  * @EnableWebSecurity 启用Spring Security的Web安全支持
@@ -34,6 +32,9 @@ import java.io.PrintWriter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Resource
+    MyProperties myProperties;
 
     /**
      * 访问鉴权 - 认证token、签名...
@@ -84,8 +85,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.antMatcher("/**").authorizeRequests();
 
+
         // 禁用CSRF 开启跨域
         http.csrf().disable().cors();
+//        http.authorizeRequests().and().formLogin()
+//                .loginProcessingUrl("/login")
+//                .loginPage("/loginPage")
+//                //其他配置
+//                .permitAll()
+//                .and()
+//                // 禁用CSRF 开启跨域
+//                .csrf().disable().cors();
+
+
+//        http.csrf().disable().cors();
 
         // 未登录认证异常
         http.exceptionHandling().authenticationEntryPoint(adminAuthenticationEntryPoint);
@@ -117,15 +130,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 标识只能在 服务器本地ip[127.0.0.1或localhost] 访问`/home`接口，其他ip地址无法访问
         registry.antMatchers("/home").hasIpAddress("127.0.0.1");
         // 允许匿名的url - 可理解为放行接口 - 多个接口使用,分割
-        registry.antMatchers("/login/index", "/index").permitAll();
-        // swagger start    配置给Swagger2放行
-        registry.antMatchers("/swagger-ui.html").permitAll();
-        registry.antMatchers("/swagger-resources/**").permitAll();
-        registry.antMatchers("/images/**").permitAll();
-        registry.antMatchers("/webjars/**").permitAll();
-        registry.antMatchers("/v2/api-docs").permitAll();
-        registry.antMatchers("/configuration/ui").permitAll();
-        registry.antMatchers("/configuration/security").permitAll();
+        for (String url : myProperties.getAuth().getIgnoreUrls()) {
+            registry.antMatchers(url).permitAll();
+        }
+//        registry.antMatchers("/login", "/index").permitAll();
+        // swagger start    配置给Swagger2放行,已经在myProperties中进行配置了
+//        registry.antMatchers("/swagger-ui.html").permitAll();
+//        registry.antMatchers("/swagger-resources/**").permitAll();
+//        registry.antMatchers("/images/**").permitAll();
+//        registry.antMatchers("/webjars/**").permitAll();
+//        registry.antMatchers("/v2/api-docs").permitAll();
+//        registry.antMatchers("/configuration/ui").permitAll();
+//        registry.antMatchers("/configuration/security").permitAll();
         // swagger end
         // OPTIONS(选项)：查找适用于一个特定网址资源的通讯选择。 在不需执行具体的涉及数据传输的动作情况下， 允许客户端来确定与资源相关的选项以及 / 或者要求， 或是一个服务器的性能
         registry.antMatchers(HttpMethod.OPTIONS, "/**").denyAll();
@@ -159,11 +175,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .withUser("liuyuay").password(passwordEncoder().encode("liuyuay0113")).roles("USER");
 //    }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        // BCryptPasswordEncoder：Spring Security 提供的加密工具，可快速实现加密加盐
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        // BCryptPasswordEncoder：Spring Security 提供的加密工具，可快速实现加密加盐
+        return new BCryptPasswordEncoder();
+    }
 
     /**
      * 登录处理
@@ -221,15 +237,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
     /**
-     * 忽略拦截
+     * 配置忽略拦截
      * @param web ay
      * @throws Exception ay
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 设置拦截忽略url - 会直接过滤该url - 将不会经过Spring Security过滤器链
-        web.ignoring().antMatchers("/getUserInfo");
+        web.ignoring().antMatchers(HttpMethod.GET,"/login");
         // 设置拦截忽略文件夹，可以对静态资源放行
-        web.ignoring().antMatchers("/css/**", "/js/**");
+        web.ignoring().antMatchers(HttpMethod.GET,"/css/**", "/js/**");
     }
 }

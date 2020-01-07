@@ -18,7 +18,7 @@ public class Constants {
     /**
      * 密码加密相关
      */
-    public static String SALT = "zhengqing";
+    public static String SALT = "liuyu";
     public static final int HASH_ITERATIONS = 1;
 
     /**
@@ -36,5 +36,9 @@ public class Constants {
     /**
      * 登录者角色
      */
-    public static final String ROLE_LOGIN = "role_login";
+    public static final String ROLE_LOGIN = "login";
+
+    public static String CreateUUID(){
+        return java.util.UUID.randomUUID().toString().replace("-", "").toUpperCase();
+    }
 }

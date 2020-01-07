@@ -22,9 +22,9 @@ public class PasswordUtils {
     /**
      * 通过SHA1对密码进行编码
      *
-     * @param password：密码
-     * @param salt：盐值
-     * @return
+     * @param password 密码
+     * @param salt 盐值
+     * @return String 加密后的密码
      */
     public static String encodePassword(String password, String salt) {
         String encodedPassword;

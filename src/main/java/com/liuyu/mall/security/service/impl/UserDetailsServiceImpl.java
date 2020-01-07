@@ -78,7 +78,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<UserRole> userRoles = userRoleDao.selectList(new QueryWrapper<UserRole>().eq("userId", userId));
         List<Role> roleList = new LinkedList<>();
         for (UserRole userRole : userRoles) {
-            Role role = roleDao.selectById(userRole.getRoleId());
+            Role role = roleDao.selectById(userRole.getRoleid());
             roleList.add(role);
         }
         return roleList;

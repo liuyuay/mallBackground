@@ -13,14 +13,14 @@ import java.util.Date;
  */
 @Component
 @ApiModel(description = "系统管理-角色对应的权限表")
-@TableName("RolePermission")
+@TableName("rolePermission")
 public class RolePermission implements Serializable {
 
     private String id;
 
-    private String roleId;
+    private String roleid;
 
-    private String permissionId;
+    private String permissionid;
 
     private Date cretime;
 
@@ -34,20 +34,20 @@ public class RolePermission implements Serializable {
         this.id = id;
     }
 
-    public String getRoleId() {
-        return roleId;
+    public String getRoleid() {
+        return roleid;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setRoleid(String roleid) {
+        this.roleid = roleid;
     }
 
-    public String getPermissionId() {
-        return permissionId;
+    public String getPermissionid() {
+        return permissionid;
     }
 
-    public void setPermissionId(String permissionId) {
-        this.permissionId = permissionId;
+    public void setPermissionid(String permissionid) {
+        this.permissionid = permissionid;
     }
 
     public Date getCretime() {
