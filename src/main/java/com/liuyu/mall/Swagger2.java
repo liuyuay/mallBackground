@@ -49,7 +49,7 @@ public class Swagger2 {
     /**
      * 创建该API的基本信息（这些基本信息会展现在文档页面中）
      * 访问地址：http://项目实际地址/swagger-ui.html
-     * http://localhost:8082/liuyu/swagger-ui.html
+     * http://localhost:8082/swagger-ui.html
      * @param myProperties 读取yml配置中的Swagger2属性配置
      * @return liuyu
      */
