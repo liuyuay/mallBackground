@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!--
+        所有的Spring Boot项目默认使用spring-boot-starter-parent作为应用程序的父项目
+        继承父项目的好处在于： 统一java版本配置和其他的一些依赖类库的版本。
+        也就是说，你引入的第三方类库不要加版本号，父项目替你管理版本，而且是经过兼容性测试的。
+        比你自己随便引入一个版本兼容性更好
+    -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -112,6 +118,12 @@
             <version>3.3.3</version>
         </dependency>
         <!-- 用于Java生成二维码 -end -->
+        <!-- lombok插件 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
@@ -128,6 +140,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--
+            Spring Boot Starter是一组被依赖第三方类库的集合
+            如果你要开发一个web应用程序，就通过包管理工具(如maven)引入spring-boot-starter-web就可以了，
+            而不用分别引入下面这么多依赖类库，spring-boot-starter-web一次性帮你引入下面的这些常用类库
+
+            Spring — spring 核心, beans, context上下文, AOP面向切面
+            Web MVC — Spring MVC
+            Jackson — JSON数据的序列化与反序列化
+            Validation — Hibernate参数校验及校验API
+            嵌入式 Servlet Container — Tomcat
+            日志框架Logging — logback, slf4j
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

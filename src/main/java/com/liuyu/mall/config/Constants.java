@@ -3,6 +3,11 @@ package com.liuyu.mall.config;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 定义常用的常量
+ *
+ * @author liuyu
+ */
 public class Constants {
 
     /**
@@ -38,7 +43,11 @@ public class Constants {
      */
     public static final String ROLE_LOGIN = "login";
 
-    public static String CreateUUID(){
+    /**
+     * 获取UUID
+     * @return String-UUID
+     * */
+    public static String createUuid(){
         return java.util.UUID.randomUUID().toString().replace("-", "").toUpperCase();
     }
 }

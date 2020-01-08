@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import javax.annotation.Resource;
 
 /**
- * @EnableWebSecurity 启用Spring Security的Web安全支持
+ * EnableWebSecurity注解 启用Spring Security的Web安全支持
  * @author liuyu
  * */
 @Configuration
@@ -78,8 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 权限配置
-     * @param http
-     * @throws Exception
+     * @param http HttpSecurity
+     * @throws Exception ss
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -246,6 +246,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 设置拦截忽略url - 会直接过滤该url - 将不会经过Spring Security过滤器链
         web.ignoring().antMatchers(HttpMethod.GET,"/login");
         // 设置拦截忽略文件夹，可以对静态资源放行
+        web.ignoring().antMatchers(HttpMethod.GET,"/configuration/security","/configuration/ui","/v2/api-docs");
         web.ignoring().antMatchers(HttpMethod.GET,"/css/**", "/js/**");
+        web.ignoring().antMatchers(HttpMethod.GET,"/webjars/springfox-swagger-ui/**","/swagger-resources/**","/images/**");
+
     }
 }

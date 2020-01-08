@@ -35,7 +35,7 @@ public class SwaggerController {
         }
     }
 
-    @RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.PUT)
     @ApiOperation(value = "修改用户密码", notes = "根据Id和旧密码修改密码")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType = "query", name = "userId", value = "英雄编号", required = true, dataType = "int"),

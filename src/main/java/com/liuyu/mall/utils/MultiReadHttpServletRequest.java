@@ -1,6 +1,8 @@
 package com.liuyu.mall.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -13,9 +15,14 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author liuyu
+ */
 public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
 
     private final byte[] body;
+
+    private static final Logger log = LoggerFactory.getLogger(MultiReadHttpServletRequest.class);
 
     public MultiReadHttpServletRequest(HttpServletRequest request) throws IOException {
         super(request);
@@ -96,7 +103,7 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
 
     /**
      * 将前端请求的表单数据转换成json字符串 - 前后端一体的情况下使用
-     * @param request:
+     * @param request :
      * @return: java.lang.String
      */
     public String getBodyJsonStrByForm(ServletRequest request){
@@ -111,7 +118,7 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
                 bodyMap.put(paraName, request.getParameter(paraName));
             }
         } catch(Exception e) {
-//            log.error("请求参数转换错误!",e);
+            log.error("请求参数转换错误!",e);
         }
         // json对象转json字符串 转javabean
 //        SecurityUser user = JSONObject.parseObject(JSONObject.toJSONString(bodyMap), SecurityUser.class);

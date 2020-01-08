@@ -30,7 +30,7 @@ public class HitokotoController{
     @Resource
     RedisTemplate<String, Object> redis;
 
-    @RequestMapping(value = "/getHitokotoById", method = RequestMethod.POST)
+    @RequestMapping(value = "/getHitokotoById", method = RequestMethod.GET)
     @ApiOperation(value = "根据ID获取一言", notes = "ID为必定提交的值，不为空")
     @ApiImplicitParam(paramType = "query", name = "Id", value = "一言id", required = true, dataType = "string")
     public String getHitokotoById(@RequestParam String Id){
@@ -41,7 +41,7 @@ public class HitokotoController{
         return json;
     }
 
-    @RequestMapping(value = "/getHitokotoByRedis", method = RequestMethod.POST)
+    @RequestMapping(value = "/getHitokotoByRedis", method = RequestMethod.GET)
     @ApiOperation(value = "根据ID获取一言", notes = "ID为必定提交的值，不为空")
     @ApiImplicitParam(paramType = "query", name = "Id", value = "一言id", required = true, dataType = "string")
     public String getHitokotoByRedis(@RequestParam String Id){

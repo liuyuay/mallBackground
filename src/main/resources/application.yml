@@ -85,14 +85,15 @@ liuyu:
       - /api/system/user/getCurrentUserInfo
       - /index
       - /logout
+#      Swagger2   start
       - /swagger-ui.html
-      #      - /swagger-resources/**
-      - /swagger-resources/configuration/ui
-      - /swagger-resources
+      - /swagger-resources/**
+      - /images/**
+      - /webjars/**
       - /v2/api-docs
-      - /swagger-resources/configuration/security
-      #      - /swagger/**
-      #      - /**/v2/api-docs
+      - /configuration/ui
+      - /configuration/security
+#      Swagger2   end
       - /**/*.js
       - /**/*.css
       - /**/*.png

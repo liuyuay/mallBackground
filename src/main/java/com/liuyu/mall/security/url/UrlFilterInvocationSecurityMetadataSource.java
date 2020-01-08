@@ -2,6 +2,7 @@ package com.liuyu.mall.security.url;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liuyu.mall.config.Constants;
+import com.liuyu.mall.config.MyProperties;
 import com.liuyu.mall.domain.Permission;
 import com.liuyu.mall.domain.Role;
 import com.liuyu.mall.domain.RolePermission;
@@ -36,6 +37,9 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
     @Resource
     private RoleDao roleDao;
 
+    @Resource
+    private MyProperties myProperties;
+
     /**
      * 获取访问该url所需要的角色权限信息
      * @param object 储存请求url信息
@@ -48,9 +52,15 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
         // TODO 忽略url请放在此处进行过滤放行
         String loginUrl = "/login";
 
-        if (loginUrl.equals(requestUrl) || requestUrl.contains("logout") || requestUrl.contains("/register")) {
-            return null;
+        for (String ignoreUrl : myProperties.getAuth().getIgnoreUrls()) {
+            if (ignoreUrl.equals(requestUrl)){
+                return null;
+            }
         }
+
+//        if (loginUrl.equals(requestUrl) || requestUrl.contains("logout") || requestUrl.contains("/register")) {
+//            return null;
+//        }
 
         if (requestUrl.contains("/login") || requestUrl.contains("/register")){
             return null;

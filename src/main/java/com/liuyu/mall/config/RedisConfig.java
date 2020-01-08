@@ -25,9 +25,13 @@ import java.time.Duration;
 import java.util.*;
 
 /**
- * @description redis配置  配置序列化方式以及缓存管理器
+ * redis配置  配置序列化方式以及缓存管理器
+ *
+ * @author liuyu
+ *
+ * EnableCaching注解开启Redis缓存
  */
-@EnableCaching // 开启缓存
+@EnableCaching
 @Configuration
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisConfig extends CachingConfigurerSupport {
@@ -35,15 +39,15 @@ public class RedisConfig extends CachingConfigurerSupport {
     /**
      *  配置自定义redisTemplate
      *
-     * @param connectionFactory
-     * @return
+     * @param connectionFactory redeis连接工厂
+     * @return RedisTemplate 是spring封装了的，RedisTemplate对象来进行对redis的各种操作，它支持所有的redis原生的api
      */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
         template.setValueSerializer(jackson2JsonRedisSerializer());
-        //使用StringRedisSerializer来序列化和反序列化redis的key值
+        /*使用StringRedisSerializer来序列化和反序列化redis的key值 */
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(jackson2JsonRedisSerializer());
@@ -53,13 +57,12 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     /**
      * json序列化
-     * @return
+     * 使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
+     * @return RedisSerializer 用于序列化和反序列化
      */
     @Bean
     public RedisSerializer<Object> jackson2JsonRedisSerializer() {
-        //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
-        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
-
+        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
@@ -69,8 +72,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     /**
      * 缓存管理器配置
-     * @param redisConnectionFactory
-     * @return
+     * @param redisConnectionFactory Redis连接工厂
+     * @return CacheManager 缓存管理器
      */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {

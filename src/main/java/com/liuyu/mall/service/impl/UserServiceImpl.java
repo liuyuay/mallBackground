@@ -10,8 +10,11 @@ import com.liuyu.mall.utils.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 
 /**
+ * 对用户进行操作
+ *
  * @author liuyu
  */
 @Service
@@ -21,15 +24,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     private UserDao userDao;
 
     @Override
-    public User login(String name) {
-        return null;
-    }
-
-    @Override
     public User register(String username, String password, String showname, Result result) {
         User user = new User();
         String encodePassword = PasswordUtils.encodePassword(password, Constants.SALT);
-        user.setId(Constants.CreateUUID());
+        user.setId(Constants.createUuid());
         user.setUsername(username);
         user.setPassword(encodePassword);
         user.setShowname(showname);
@@ -47,5 +45,54 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             result.setResult(user);
         }
         return user;
+    }
+
+    @Override
+    public Serializable updateInfo(Serializable id, String password, String showName, Result result) {
+        User user = userDao.selectById(id);
+        Serializable userId = "";
+        if(user == null){
+            result.setSuccess(false);
+            result.setCode(500);
+            result.setMessage("用户不存在");
+            result.setResult("");
+        }else{
+            String encodePassword = PasswordUtils.encodePassword(password, Constants.SALT);
+            user.setShowname(showName);
+            user.setPassword(encodePassword);
+            userId = userDao.updateById(user);
+            result.setSuccess(true);
+            result.setCode(200);
+            result.setMessage("修改成功");
+            result.setResult(user);
+        }
+        return userId;
+    }
+
+    @Override
+    public User getUserInfo(Serializable id, Result result) {
+        User user = userDao.selectById(id);
+        if(user == null){
+            result.setSuccess(false);
+            result.setCode(500);
+            result.setMessage("系统错误！");
+            result.setResult("");
+        }else{
+            result.setSuccess(true);
+            result.setCode(200);
+            result.setMessage("查询个人信息成功");
+            result.setResult(user);
+        }
+        return user;
+    }
+
+    @Override
+    public Serializable deleteUser(Serializable id, Result result) {
+        Serializable userId = userDao.deleteById(id);
+        result.setSuccess(true);
+        result.setCode(200);
+        result.setMessage("删除成功");
+        result.setResult("");
+        return userId;
     }
 }

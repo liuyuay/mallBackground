@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * 读取yml文件中的配置
  * @author liuyu
  */
 @Component
