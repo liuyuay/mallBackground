@@ -1,15 +1,16 @@
 package com.liuyu.mall.controller;
 
 
+import com.liuyu.mall.domain.User;
+import com.liuyu.mall.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 一个用来测试swagger注解的控制器
@@ -22,16 +23,29 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "SwaggerController|一个用来测试Swagger2的控制器")
 public class SwaggerController {
 
-    @RequestMapping(value = "/getUserName", method = RequestMethod.GET)
+    @RequestMapping(value = "/getUserName", method = RequestMethod.POST)
     @ApiOperation(value = "根据编号获取英雄姓名", notes = "只有1和2能返回正确的英雄姓名")
-    @ApiImplicitParam(paramType = "query", name = "userCode", value = "英雄编号", required = true, dataType = "int")
-    public String getUserName(@RequestParam Integer userCode){
-        if(userCode == 1){
-            return "貂蝉";
-        }else if(userCode == 2){
-            return "露娜";
+//    @ApiImplicitParam(paramType = "query", name = "user", value = "英雄编号", required = true, dataType = "User")
+    public Result getUserName(@RequestBody User user){
+        Result result = new Result();
+        if(user.getUsername().equals("1")){
+            result.setResult("貂蝉");
+            result.setMessage("成功!");
+            result.setSuccess(true);
+            result.setCode(200);
+            return result;
+        }else if(user.getUsername().equals("2")){
+            result.setResult("露娜");
+            result.setMessage("成功!");
+            result.setSuccess(true);
+            result.setCode(200);
+            return result;
         }else{
-            return "暂时没有该英雄哦";
+            result.setResult("null");
+            result.setMessage("没有该英雄!");
+            result.setSuccess(false);
+            result.setCode(400);
+            return result;
         }
     }
 

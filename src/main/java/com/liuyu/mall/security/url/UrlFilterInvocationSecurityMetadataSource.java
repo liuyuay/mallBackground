@@ -62,7 +62,7 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
 //            return null;
 //        }
 
-        if (requestUrl.contains("/login") || requestUrl.contains("/register")){
+        if (requestUrl.contains("/login") || requestUrl.contains("/register") || requestUrl.contains("/getUserName")){
             return null;
         }
         // 数据库中所有url

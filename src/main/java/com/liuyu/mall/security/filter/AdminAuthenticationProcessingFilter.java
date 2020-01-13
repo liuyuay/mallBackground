@@ -46,12 +46,12 @@ public class AdminAuthenticationProcessingFilter extends AbstractAuthenticationP
         try {
             MultiReadHttpServletRequest wrappedRequest = new MultiReadHttpServletRequest(request);
             // 将前端传递的数据转换成jsonBean数据格式
-            User user = new User();
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            user.setUsername(username);
-            user.setPassword(password);
-//            User user = JSONObject.parseObject(wrappedRequest.getBodyJsonStrByJson(wrappedRequest), User.class);
+//            User user = new User();
+//            String username = request.getParameter("username");
+//            String password = request.getParameter("password");
+//            user.setUsername(username);
+//            user.setPassword(password);
+            User user = JSONObject.parseObject(wrappedRequest.getBodyJsonStrByJson(wrappedRequest), User.class);
             authRequest = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
             authRequest.setDetails(authenticationDetailsSource.buildDetails(wrappedRequest));
         } catch (Exception e) {

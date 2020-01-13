@@ -82,6 +82,7 @@ liuyu:
     ignoreUrls:
       - /register
       - /login
+      - /getUserName
       - /api/system/user/getCurrentUserInfo
       - /index
       - /logout

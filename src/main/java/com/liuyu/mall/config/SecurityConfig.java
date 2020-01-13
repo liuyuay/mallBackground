@@ -159,7 +159,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 将用户设置在内存中
-     * @param auth ay
      * @throws Exception ay
      */
 //    @Autowired
@@ -244,7 +243,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 设置拦截忽略url - 会直接过滤该url - 将不会经过Spring Security过滤器链
-        web.ignoring().antMatchers(HttpMethod.GET,"/login");
+        web.ignoring().antMatchers(HttpMethod.GET,"/login","/getUserName");
         // 设置拦截忽略文件夹，可以对静态资源放行
         web.ignoring().antMatchers(HttpMethod.GET,"/configuration/security","/configuration/ui","/v2/api-docs");
         web.ignoring().antMatchers(HttpMethod.GET,"/css/**", "/js/**");
