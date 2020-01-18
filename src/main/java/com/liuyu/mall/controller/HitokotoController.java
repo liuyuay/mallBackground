@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * @author liuyu
+ */
 @RestController
 @RequestMapping
 @Api(value = "HitokotoController|一言")
@@ -32,9 +35,9 @@ public class HitokotoController{
 
     @RequestMapping(value = "/getHitokotoById", method = RequestMethod.GET)
     @ApiOperation(value = "根据ID获取一言", notes = "ID为必定提交的值，不为空")
-    @ApiImplicitParam(paramType = "query", name = "Id", value = "一言id", required = true, dataType = "string")
-    public String getHitokotoById(@RequestParam String Id){
-        hitokoto = hitokotoService.getData(Id);
+    @ApiImplicitParam(paramType = "query", name = "id", value = "一言id", required = true, dataType = "string")
+    public String getHitokotoById(@RequestParam String id){
+        hitokoto = hitokotoService.getData(id);
         Object object = JSONArray.toJSON(hitokoto);
         String json = object.toString();
         System.out.println(json);
@@ -43,11 +46,11 @@ public class HitokotoController{
 
     @RequestMapping(value = "/getHitokotoByRedis", method = RequestMethod.GET)
     @ApiOperation(value = "根据ID获取一言", notes = "ID为必定提交的值，不为空")
-    @ApiImplicitParam(paramType = "query", name = "Id", value = "一言id", required = true, dataType = "string")
-    public String getHitokotoByRedis(@RequestParam String Id){
-        hitokoto = (Hitokoto) redis.opsForValue().get(Id);
+    @ApiImplicitParam(paramType = "query", name = "id", value = "一言id", required = true, dataType = "string")
+    public String getHitokotoByRedis(@RequestParam String id){
+        hitokoto = (Hitokoto) redis.opsForValue().get(id);
         if(hitokoto == null){
-            hitokoto = hitokotoService.getData(Id);
+            hitokoto = hitokotoService.getData(id);
             redis.opsForValue().set(hitokoto.getId(),hitokoto);
         }
         Object object = JSONArray.toJSON(hitokoto);

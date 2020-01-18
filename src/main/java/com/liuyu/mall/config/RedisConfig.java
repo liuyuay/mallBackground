@@ -26,9 +26,7 @@ import java.util.*;
 
 /**
  * redis配置  配置序列化方式以及缓存管理器
- *
  * @author liuyu
- *
  * EnableCaching注解开启Redis缓存
  */
 @EnableCaching

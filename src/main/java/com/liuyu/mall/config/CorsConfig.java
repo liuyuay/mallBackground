@@ -6,6 +6,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * 跨域解决方案
+ * @author liuyu
+ */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
